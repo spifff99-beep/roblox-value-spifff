@@ -1,0 +1,19 @@
+{
+  "name": "roblox-value-public",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Public Roblox inventory value checker and leaderboard",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.7",
+    "express": "^5.1.0",
+    "better-sqlite3": "^11.10.0"
+  }
+}

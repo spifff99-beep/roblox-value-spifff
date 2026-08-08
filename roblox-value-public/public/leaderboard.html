@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Roblox Value Leaderboard</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<header class="header">
+  <a class="brand" href="/">
+    <span class="brand-icon">R</span>
+    <span>Roblox Value</span>
+  </a>
+  <nav>
+    <a href="/">Value Checker</a>
+    <a class="active" href="/leaderboard.html">All Users</a>
+  </nav>
+</header>
+
+<main class="wrap">
+  <section class="page-title">
+    <div>
+      <div class="eyebrow">PUBLIC LEADERBOARD</div>
+      <h1>All Users</h1>
+      <p>Users are sorted by calculated inventory value.</p>
+    </div>
+    <button id="refreshLeaderboard" class="secondary">Refresh</button>
+  </section>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>User</th>
+          <th>Inventory</th>
+          <th>Value</th>
+          <th>Updated</th>
+        </tr>
+      </thead>
+      <tbody id="leaderboard"></tbody>
+    </table>
+  </div>
+</main>
+
+<script>
+async function loadLeaderboard() {
+  const tbody = document.getElementById("leaderboard");
+  tbody.innerHTML = '<tr><td colspan="5" class="loading">Loading...</td></tr>';
+
+  try {
+    const response = await fetch("/api/leaderboard");
+    const users = await response.json();
+
+    if (!users.length) {
+      tbody.innerHTML = '<tr><td colspan="5" class="loading">No users yet.</td></tr>';
+      return;
+    }
+
+    tbody.innerHTML = users.map((user, index) => {
+      const avatar = `https://www.roblox.com/headshot-thumbnail/image?userId=${encodeURIComponent(user.userId)}&width=150&height=150&format=png`;
+
+      return `
+        <tr>
+          <td class="rank">${index + 1}</td>
+          <td>
+            <div class="user-cell">
+              <img src="${avatar}" alt="">
+              <div>
+                <strong>${escapeHtml(user.username)}</strong>
+                <small>ID ${escapeHtml(user.userId)}</small>
+              </div>
+            </div>
+          </td>
+          <td>${Number(user.pricedItemCount || 0).toLocaleString()} priced items</td>
+          <td class="value-cell">${Number(user.value || 0).toLocaleString()} R$</td>
+          <td>${formatDate(user.updatedAt)}</td>
+        </tr>`;
+    }).join("");
+  } catch {
+    tbody.innerHTML = '<tr><td colspan="5" class="loading">Could not load leaderboard.</td></tr>';
+  }
+}
+
+function formatDate(value) {
+  return new Date(value).toLocaleString("en-GB", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit"
+  });
+}
+
+function escapeHtml(value) {
+  return String(value ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
+document.getElementById("refreshLeaderboard").addEventListener("click", loadLeaderboard);
+loadLeaderboard();
+</script>
+</body>
+</html>

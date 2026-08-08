@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Roblox Value Checker</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<header class="header">
+  <a class="brand" href="/">
+    <span class="brand-icon">R</span>
+    <span>Roblox Value</span>
+  </a>
+  <nav>
+    <a class="active" href="/">Value Checker</a>
+    <a href="/leaderboard.html">All Users</a>
+  </nav>
+</header>
+
+<main class="wrap">
+  <section class="hero">
+    <div>
+      <div class="eyebrow">PUBLIC INVENTORY CHECKER</div>
+      <h1>Check your Roblox inventory value.</h1>
+      <p>Enter a public Roblox username or User ID. Your result is saved to the public leaderboard.</p>
+    </div>
+
+    <form id="checkForm" class="checker">
+      <input id="username" autocomplete="off" placeholder="Roblox username or User ID" required>
+      <button id="checkButton">Check Value</button>
+    </form>
+    <div id="message" class="message"></div>
+  </section>
+
+  <section id="result" class="result hidden"></section>
+
+  <section class="info-grid">
+    <div class="info-card">
+      <span>1</span>
+      <h3>Enter your username</h3>
+      <p>Only your public Roblox username/User ID is requested.</p>
+    </div>
+    <div class="info-card">
+      <span>2</span>
+      <h3>Inventory is checked</h3>
+      <p>The server retrieves available inventory and catalog pricing.</p>
+    </div>
+    <div class="info-card">
+      <span>3</span>
+      <h3>Join the leaderboard</h3>
+      <p>Your calculated value is stored and displayed publicly.</p>
+    </div>
+  </section>
+</main>
+
+<script src="/app.js"></script>
+</body>
+</html>
